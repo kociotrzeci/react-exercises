@@ -1,38 +1,16 @@
-import React, { useState } from "react";
-import "./App.css";
+import { useEffect, useState } from "react";
 
-const COLORS = ["pink", "green", "blue", "yellow", "purple"];
+export default function Clock() {
+  const [counter, setCounter] = useState(0);
 
-function App() {
-  const [backgroundColor, setBackgroundColor] = useState(COLORS[0]);
-  const [changesNumber, increaseChanges] = useState(0);
-  const onButtonClick = (color) => () => {
-    if (color != backgroundColor) {
-      setBackgroundColor(color);
-      increaseChanges(changesNumber + 1);
-    }
-  };
+  useEffect(() => {
+    const key = setInterval(() => {
+      setCounter((count) => count + 1);
+    }, 1000);
+    return () => {
+      clearInterval(key);
+    };
+  }, []);
 
-  return (
-    <div
-      className="App"
-      style={{
-        backgroundColor,
-      }}
-    >
-      {COLORS.map((color) => (
-        <button
-          type="button"
-          key={color}
-          onClick={onButtonClick(color)}
-          className={backgroundColor === color ? "selected" : ""}
-        >
-          {color}
-        </button>
-      ))}
-      <div>{changesNumber}</div>
-    </div>
-  );
+  return <p>{counter} seconds have passed.</p>;
 }
-
-export default App;
